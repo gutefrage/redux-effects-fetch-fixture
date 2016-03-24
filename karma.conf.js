@@ -1,5 +1,6 @@
 // Karma configuration
 // Generated on Wed Mar 23 2016 21:55:29 GMT+0100 (CET)
+var path = require('path');
 
 module.exports = function(config) {
   config.set({
@@ -15,8 +16,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'src/*.js',
-      'test/*.js'
+      'node_modules/babel-polyfill/dist/polyfill.js',
+      'test/index.js'
     ],
 
 
@@ -28,16 +29,34 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/*.js': ['babel'],
-      'test/*.js': ['babel']
-    },
-    
-    babelPreprocessor: {
-      options: {
-        presets: ['es2015']
-      }
+      'src/*.js': ['webpack'],
+      'test/*.js': ['webpack']
     },
 
+    // webpack configuration used for tests.
+    // This is just the necessary subset of the main webpack config.
+    webpack: {
+      module: {
+        loaders: [
+          {
+            test: /.js?$/,
+            loader: 'babel-loader',
+            exclude: /node_modules/,
+            query: {
+              presets: ['es2015']
+            }
+          }
+        ]
+      },
+      resolve: {
+        //root: path.resolve('./src'),
+        extensions: ['', '.js']
+      }
+    },
+    webpackServer: {
+      // Print or hide webpack bundling output
+      noInfo: true
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -55,7 +74,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DISABLE,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -66,6 +85,10 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS2'],
 
+
+    client: {
+      captureConsole: false
+    },
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
