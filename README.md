@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/team-boris/redux-effects-fetch-fixture.svg?branch=master)](https://travis-ci.org/team-boris/redux-effects-fetch-fixture)
+[![NPM Version](https://img.shields.io/npm/v/redux-effects-fetch-fixture.svg?style=flat)](https://www.npmjs.com/package/redux-effects-fetch-fixture)
+
 # redux-effects-fetch-fixture
 
 This is an extension for [redux-effects-fetch][], which lets you define fixtures for your FETCH actions.
