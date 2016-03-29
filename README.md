@@ -102,5 +102,13 @@ const fixture = {
 };
 ```
 
+## Build
+
+To build the library
+
+```
+npm run build
+```
+
 [redux-effects]: https://github.com/redux-effects/redux-effects
 [redux-effects-fetch]: https://github.com/redux-effects/redux-effects-fetch
