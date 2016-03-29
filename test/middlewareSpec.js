@@ -1,7 +1,7 @@
 /* global describe, it, expect */
 
 import {fetch} from 'redux-effects-fetch';
-import fetchLocal, { responses } from '../src';
+import fetchLocal, { responses } from '../src/effectsFetchFixture';
 
 describe('effects.fetchLocal', () => {
   describe('local fetch middleware', () => {
