@@ -1,6 +1,6 @@
 {
   "name": "redux-effects-fetch-fixture",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Middleware for redux-effects-fetch to serve requests from a local fixture definition",
   "main": "src/index.js",
   "directories": {
