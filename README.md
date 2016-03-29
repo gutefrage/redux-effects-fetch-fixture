@@ -4,7 +4,7 @@
 # redux-effects-fetch-fixture
 
 This is an extension for [redux-effects-fetch][], which lets you define fixtures for your FETCH actions.
-Now you are able to develope completely without any REST backend.
+Now you are able to develop completely without any REST backend.
 
 ## Installation
 
@@ -33,6 +33,7 @@ The fixture definition is structured like this:
 ```javascript
 '<path>': {
   '<HTTP-METHOD>': (body, [delegate]) => httpResponsePromise
+}
 ```
 
 The path-string acts as a key (no regex, no order), so make sure they are unique.
@@ -48,7 +49,7 @@ import {responses} from 'redux-effects-fetch-fixture';
 responses.ok();
 
 // 200 response with body
-responses.ok({ userId: 123});
+responses.ok({userId: 123});
 
 // delayed 200 response
 responses.okDelayed({})
