@@ -1,0 +1,4 @@
+# override so lib gets published
+node_modules
+test
+karma.conf.js
