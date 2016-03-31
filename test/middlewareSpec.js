@@ -54,6 +54,42 @@ describe('effects.fetchLocal', () => {
       });
     });
 
+    it('should parse JSON bodies if a Content-Type header is set', (done) => {
+      const action = fetch('/test', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: '{"key": "value"}'
+      });
+      const fixture = {
+        '/test': {
+          'POST': (body) => responses.ok({body})
+        }
+      };
+
+      run(fixture, action).then(result => {
+        expect(result.value).toEqual({body: {key: 'value'}});
+        done();
+      });
+    });
+
+    it('should not parse JSON bodies that are not strings', (done) => {
+      const action = fetch('/test', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: {key: 'value'}
+      });
+      const fixture = {
+        '/test': {
+          'POST': (body) => responses.ok({body})
+        }
+      };
+
+      run(fixture, action).then(result => {
+        expect(result.value).toEqual({body: {key: 'value'}});
+        done();
+      });
+    });
+
     it('should allow a fixture to delegate to another fixture', (done) => {
       const action = fetch('/foo');
       const fixture = {

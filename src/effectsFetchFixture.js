@@ -1,6 +1,7 @@
 // @see https://github.com/redux-effects/redux-effects-fetch/blob/master/src/index.js
 import {FETCH} from 'redux-effects-fetch';
 import URL from 'url-parse';
+import {isString} from 'lodash/lang';
 import {trimStart} from 'lodash/string';
 import {noop} from 'lodash/util';
 
@@ -11,11 +12,24 @@ import {noop} from 'lodash/util';
  * actions and responses with fixtures defined in this file.
  */
 export default function localFetchMiddleware(fixtures) {
-  return () => next => action =>
-    action.type === FETCH
-      ? resolveFixture(fixtures, action.payload.url, action.payload.params.method || 'GET', action.payload.params.body)
-      : next(action);
+  return () => next => action => {
+    switch (action.type) {
+    case FETCH:
+      const {payload: {url, params: {method, body, headers}}} = action;
+      return resolveFixture(fixtures, url, method || 'GET', parseBody(body, headers));
+    default:
+      return next(action);
+    }
+  }
 }
+
+const parseBody = (body, headers) => {
+  if (isString(body) && headers && headers['Content-Type'] === 'application/json') {
+    return JSON.parse(body);
+  } else {
+    return body;
+  }
+};
 
 /*eslint-disable  no-console */
 const resolveFixture = (fixtures, urlPath, method, body) => {
@@ -31,7 +45,7 @@ const resolveFixture = (fixtures, urlPath, method, body) => {
   if (isGET) {
     logBuffer.push(() => console.info('%c[PARAMS]', 'color: #380B61', trimStart(url.query, '?')));
   } else {
-    logBuffer.push(() => console.info('%c[BODY]', 'color: #380B61', JSON.parse(body)));
+    logBuffer.push(() => console.info('%c[BODY]', 'color: #380B61', body));
   }
 
   const endpoint = fixtures[url.pathname];
