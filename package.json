@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "karma start --single-run",
-    "build": "babel ./src --out-dir ./lib"
+    "prepublish": "rm -rf lib && babel ./src --out-dir ./lib",
+    "postpublish": "rm -rf lib && babel ./src --out-dir ./lib"
   },
   "repository": {
     "type": "git",
