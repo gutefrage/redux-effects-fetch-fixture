@@ -125,15 +125,13 @@ const httpErrorResponse = (statusCode, statusText) => (kind, message) => {
   return promise;
 };
 
-const internalServerError = httpErrorResponse(500, 'Internal Server Error')(null, null);
-const notFound = httpErrorResponse(404, 'Not Found');
-const unauthorized = httpErrorResponse(401, 'Unauthorized');
-
 export const responses = {
   ok,
   okDelayed,
   error,
-  internalServerError,
-  notFound,
-  unauthorized
+  // static response
+  internalServerError: httpErrorResponse(500, 'Internal Server Error')(null, null),
+  notFound: httpErrorResponse(404, 'Not Found'),
+  unauthorized: httpErrorResponse(401, 'Unauthorized'),
+  forbidden: httpErrorResponse(403, 'Forbidden')
 };
