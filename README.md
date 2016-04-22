@@ -71,7 +71,10 @@ responses.internalServerError;
 responses.notFound('user.notFound', 'The requested user was not found')
 
 // delayed 401 response
-responses.unauthorized('user.unauthorized', 'You are not allowed to access this page')
+responses.unauthorized('user.unauthorized', 'Authorize first to see this site')
+
+// forbidden 403 response
+responses.forbidden('user.unauthorized', 'You are not allowed to access this page')
 ```
 
 ## Examples
@@ -109,6 +112,15 @@ To build the library
 
 ```
 npm run build
+```
+
+## Release
+
+```
+npm version [patch|minor|major]
+npm publish
+git push
+git push --tags
 ```
 
 [redux-effects]: https://github.com/redux-effects/redux-effects
