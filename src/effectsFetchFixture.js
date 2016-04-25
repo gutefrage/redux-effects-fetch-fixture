@@ -131,6 +131,7 @@ export const responses = {
   error,
   // static response
   internalServerError: httpErrorResponse(500, 'Internal Server Error')(null, null),
+  badRequest: httpErrorResponse(400, 'Bad Request'),
   notFound: httpErrorResponse(404, 'Not Found'),
   unauthorized: httpErrorResponse(401, 'Unauthorized'),
   forbidden: httpErrorResponse(403, 'Forbidden')
