@@ -111,6 +111,17 @@ const error = (message) => {
   return Promise.reject(new Error(message));
 };
 
+/**
+ * Generates a general response for 4xx/5xx response.
+ *
+ * The resulting format is:
+ *
+ * { status: `statusCode`, statusText: `statusText`, value: { kind: `kind`, message: `message` } }
+ *
+ * @param statusCode e.g. 404
+ * @param statusText e.g. "Not Found"
+ * @returns a rejected promise http response
+ */
 const httpErrorResponse = (statusCode, statusText) => (kind, message) => {
   const promise = Promise.reject({
     status: statusCode,
@@ -129,10 +140,12 @@ export const responses = {
   ok,
   okDelayed,
   error,
+  httpErrorResponse,
   // static response
   internalServerError: httpErrorResponse(500, 'Internal Server Error')(null, null),
   badRequest: httpErrorResponse(400, 'Bad Request'),
   notFound: httpErrorResponse(404, 'Not Found'),
   unauthorized: httpErrorResponse(401, 'Unauthorized'),
-  forbidden: httpErrorResponse(403, 'Forbidden')
+  forbidden: httpErrorResponse(403, 'Forbidden'),
+  conflict: httpErrorResponse(409, 'Conflict')
 };
