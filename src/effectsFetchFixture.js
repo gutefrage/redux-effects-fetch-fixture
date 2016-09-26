@@ -14,13 +14,14 @@ import {noop} from 'lodash/util';
 export default function localFetchMiddleware(fixtures) {
   return () => next => action => {
     switch (action.type) {
-    case FETCH:
+    case FETCH: {
       const {payload: {url, params: {method, body, headers}}} = action;
       return resolveFixture(fixtures, url, method || 'GET', parseBody(body, headers));
+    }
     default:
       return next(action);
     }
-  }
+  };
 }
 
 const parseBody = (body, headers) => {

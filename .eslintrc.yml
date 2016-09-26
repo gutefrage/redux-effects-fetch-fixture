@@ -1,0 +1,63 @@
+root: true
+extends:
+  - eslint:recommended
+  - plugin:import/errors
+  - plugin:import/warnings
+parser: "babel-eslint"
+env:
+  # Add eslint globals
+  es6: true
+  # Add browser globals
+  browser: true
+  # Webpack adds a node environment
+  node: true
+settings:
+  import/extensions: ['.js']
+rules:
+  # Semantic rules
+  # Forbid `var` in favour of `const` and `let`
+  no-var: error
+  # Prefer constants
+  prefer-const: error
+  # and warn about assignment to constants
+  no-const-assign: error
+  # Recommend a parent constructor call
+  constructor-super: error
+  # Disallow object attribute access before parent constructor call
+  no-this-before-super: warn
+  # Warn about useless constructors
+  no-useless-constructor: error
+  # Style rules
+  # Prefer arrow functions for function() {} in callbacks
+  prefer-arrow-callback: error
+  # Prefer rest ...arg over arguments magic variable
+  prefer-rest-params: error
+  # Prefer spread operator over .apply()
+  prefer-spread: error
+  # Prefer string template over string concatenation
+  prefer-template: error
+  # Require single quotes for Javascript
+  quotes: [error, single]
+  # Prefer double quotes in JSX templates
+  jsx-quotes: [error, prefer-double]
+  # Always require a semicolon to terminate statements
+  semi: [error, always]
+  # Indent with two spaces
+  indent: [error, 2]
+  # Keep braces on same line
+  brace-style: [error, 1tbs]
+  # 120 chars per line
+  max-len: [error, 120]
+  # Whitespace style
+  array-bracket-spacing: [error, never]
+  space-in-parens: [error, never]
+  template-curly-spacing: [error, never]
+  yield-star-spacing: [error, before]
+  generator-star-spacing: [error, before]
+  space-infix-ops: error
+  keyword-spacing: error
+  arrow-spacing: [error, {before: true, after: true}]
+  comma-spacing: [error, {before: false, after: true}]
+  key-spacing: [error, {beforeColon: false, afterColon: true}]
+  no-trailing-spaces: error
+  eol-last: error
