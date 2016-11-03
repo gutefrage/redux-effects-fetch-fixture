@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/team-boris/redux-effects-fetch-fixture.git"
+    "url": "git+https://github.com/gutefrage/redux-effects-fetch-fixture.git"
   },
   "keywords": [
     "redux",
@@ -24,9 +24,9 @@
   "author": "Team Boris",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/team-boris/redux-effects-fetch-fixture/issues"
+    "url": "https://github.com/gutefrage/redux-effects-fetch-fixture/issues"
   },
-  "homepage": "https://github.com/team-boris/redux-effects-fetch-fixture#readme",
+  "homepage": "https://github.com/gutefrage/redux-effects-fetch-fixture#readme",
   "dependencies": {
     "lodash": "^4.6.1",
     "redux-effects-fetch": "^0.5.5",

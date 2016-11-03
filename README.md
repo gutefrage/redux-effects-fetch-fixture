@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/team-boris/redux-effects-fetch-fixture.svg?branch=master)](https://travis-ci.org/team-boris/redux-effects-fetch-fixture)
+[![Build Status](https://travis-ci.org/gutefrage/redux-effects-fetch-fixture.svg?branch=master)](https://travis-ci.org/gutefrage/redux-effects-fetch-fixture)
 [![NPM Version](https://img.shields.io/npm/v/redux-effects-fetch-fixture.svg?style=flat)](https://www.npmjs.com/package/redux-effects-fetch-fixture)
 
 # redux-effects-fetch-fixture
