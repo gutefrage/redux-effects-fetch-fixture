@@ -2,6 +2,7 @@
 
 import {fetch} from 'redux-effects-fetch';
 import fetchLocal, { responses } from '../src/effectsFetchFixture';
+import { buildRouteTree, lookupRoute } from '../src/routing';
 
 describe('effects.fetchLocal', () => {
   describe('local fetch middleware', () => {
@@ -34,6 +35,78 @@ describe('effects.fetchLocal', () => {
         expect(result.status).toBe(200);
         expect(result.statusText).toBe('OK');
         expect(result.value).toEqual({});
+        done();
+      });
+    });
+
+    it('should return a fixture with an url parameter', (done) => {
+      const action = fetch('/test/123');
+      const fixture = {
+        '/test/:id': {
+          'GET': () => responses.ok({})
+        }
+      };
+
+      run(fixture, action).then(result => {
+        expect(result.status).toBe(200);
+        expect(result.statusText).toBe('OK');
+        expect(result.value).toEqual({});
+        done();
+      });
+    });
+
+    it('should prefer non-parameterized paths', (done) => {
+      const action = fetch('/test/abc');
+      const fixture = {
+        '/test/:id': {
+          'GET': () => responses.ok({})
+        },
+
+        '/test/abc': {
+          'GET': () => responses.ok({ ok: true })
+        }
+      };
+
+      run(fixture, action).then(result => {
+        expect(result.status).toBe(200);
+        expect(result.statusText).toBe('OK');
+        expect(result.value).toEqual({ ok: true });
+        done();
+      });
+    });
+
+    it('should match the full path', (done) => {
+      const action = fetch('/test/abc/action', { method: 'POST' });
+      const fixture = {
+        '/test/:id': {
+          'GET': () => responses.ok({})
+        },
+
+        '/test/:id/action': {
+          'POST': () => responses.ok({ ok: true })
+        }
+      };
+
+      run(fixture, action).then(result => {
+        expect(result.status).toBe(200);
+        expect(result.statusText).toBe('OK');
+        expect(result.value).toEqual({ ok: true });
+        done();
+      });
+    });
+
+    it('should pass the url parameters as the third argument to the handler function', (done) => {
+      const action = fetch('/greet/axel/with/hello');
+      const fixture = {
+        '/greet/:name/with/:greeting': {
+          'GET': (body, delegate, params) => responses.ok(params)
+        }
+      };
+
+      run(fixture, action).then(result => {
+        expect(result.status).toBe(200);
+        expect(result.statusText).toBe('OK');
+        expect(result.value).toEqual({ name: "axel", greeting: "hello" });
         done();
       });
     });
