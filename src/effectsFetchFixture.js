@@ -4,7 +4,7 @@ import URL from 'url-parse';
 import {isString} from 'lodash/lang';
 import {trimStart} from 'lodash/string';
 import {noop} from 'lodash/util';
-import { buildRouteTree, lookupRoute } from "./routing";
+import {buildRouteTree, lookupRoute} from './routing';
 
 /**
  * == Fetch middleware ==

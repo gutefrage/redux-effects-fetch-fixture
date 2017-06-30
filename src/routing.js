@@ -1,4 +1,4 @@
-import {chain, merge, toPairs, findKey, pickBy, trim} from 'lodash';
+import {chain, merge, toPairs, trim} from 'lodash';
 
 const isParam = segment => segment.substr(0, 1) === ':';
 const toSegments = pathname => trim(pathname, '/').split('/');
@@ -15,7 +15,7 @@ const buildRoute = (segments, methods) => {
         : buildRoute(segments, methods)
     )
   };
-}
+};
 
 const buildParams = (param, value) =>
   param ? { params: { [param.substr(1)]: value } } : {};
@@ -61,12 +61,12 @@ const lookup = (segments, routes) => {
     lookup(segments, match),
     buildParams(param, segment)
   );
-}
+};
 
 export const buildRouteTree = (routes) => {
-  return merge.apply(null,
-    toPairs(routes)
-    .map(([route, methods]) => buildRoute(toSegments(route), methods))
+  return merge(
+    ...toPairs(routes)
+      .map(([route, methods]) => buildRoute(toSegments(route), methods))
   );
 };
 
