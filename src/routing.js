@@ -1,6 +1,4 @@
-import {chain} from 'lodash';
-import {merge, toPairs, findKey, pickBy} from 'lodash/object';
-import {trim} from 'lodash/string';
+import {chain, merge, toPairs, findKey, pickBy, trim} from 'lodash';
 
 const isParam = segment => segment.substr(0, 1) === ':';
 const toSegments = pathname => trim(pathname, '/').split('/');
