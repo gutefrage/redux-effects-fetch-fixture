@@ -1,18 +1,25 @@
-import {chain, merge, toPairs, trim} from 'lodash';
+import {chain, merge, toPairs, trim, startsWith} from 'lodash';
 
-const isParam = segment => segment.substr(0, 1) === ':';
+const isParam = segment => startsWith(segment, ':');
 const toSegments = pathname => trim(pathname, '/').split('/');
 
+/*
+ * Builds a route object based on an array of segments. A route object is a
+ * plain js object with the edge containing the route methods.
+ *
+ * @param segments The array of path segments (eg. ['path', ':id', 'action'])
+ * @param methods Object containing the methods for the given path
+ */
 const buildRoute = (segments, methods) => {
-  const segment = segments.shift();
-  const edge = segments.length === 0;
+  const [segment, ...remainingSegments] = segments;
+  const isEdge = remainingSegments.length === 0;
 
   return {
     [segment]: merge(
       { $param: isParam(segment) },
-      edge
-        ? { $edge: edge, $methods: methods }
-        : buildRoute(segments, methods)
+      isEdge
+        ? { $edge: isEdge, $methods: methods }
+        : buildRoute(remainingSegments, methods)
     )
   };
 };
@@ -20,9 +27,18 @@ const buildRoute = (segments, methods) => {
 const buildParams = (param, value) =>
   param ? { params: { [param.substr(1)]: value } } : {};
 
+/*
+ * Lookup tries to find a specific route given a route tree. It works by moving
+ * up the tree one segment at a time, until it either finds an edge matching
+ * the last path segment, or the path could no longer be resolved.
+ *
+ * @param segments List of path segments
+ * @param routes The route tree, as produced by buildRouteTree
+ * @returns The route methods or `undefined`
+ */
 const lookup = (segments, routes) => {
-  const segment = segments.shift();
-  const isLastSegment = segments.length === 0;
+  const [segment, ...remainingSegments] = segments;
+  const isLastSegment = remainingSegments.length === 0;
   const direct = routes[segment];
 
   const [param, match] =
@@ -58,7 +74,7 @@ const lookup = (segments, routes) => {
   }
 
   return merge(
-    lookup(segments, match),
+    lookup(remainingSegments, match),
     buildParams(param, segment)
   );
 };
