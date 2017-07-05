@@ -32,11 +32,11 @@ The fixture definition is structured like this:
 
 ```javascript
 '<path>': {
-  '<HTTP-METHOD>': (body, [delegate]) => httpResponsePromise
+  '<HTTP-METHOD>': (body[, delegate[, params]]) => httpResponsePromise
 }
 ```
 
-The path-string acts as a key (no regex, no order), so make sure they are unique.
+The path-string supports URL parameters using the `:param` syntax.
 
 ### response helpers
 
@@ -94,8 +94,8 @@ const fixture = {
     'GET': () => responses.ok({found: true})
   },
   // define responses for different http methods
-  'user/1': {
-    'GET': () => responses.ok(),
+  'user/:id': {
+    'GET': (body, delegate, params) => responses.ok({ id: params.id }),
     'POST': () => responses.ok({created: true})
     'DELETE': () => responses.unauthorized('user.unauthorized', 'not allowed to delete this user')
   },

@@ -4,6 +4,7 @@ import URL from 'url-parse';
 import {isString} from 'lodash/lang';
 import {trimStart} from 'lodash/string';
 import {noop} from 'lodash/util';
+import {buildRouteTree, lookupRoute} from './routing';
 
 /**
  * == Fetch middleware ==
@@ -12,11 +13,13 @@ import {noop} from 'lodash/util';
  * actions and responses with fixtures defined in this file.
  */
 export default function localFetchMiddleware(fixtures) {
+  const routes = buildRouteTree(fixtures);
+
   return () => next => action => {
     switch (action.type) {
     case FETCH: {
       const {payload: {url, params: {method, body, headers}}} = action;
-      return resolveFixture(fixtures, url, method || 'GET', parseBody(body, headers));
+      return resolveFixture(routes, url, method || 'GET', parseBody(body, headers));
     }
     default:
       return next(action);
@@ -33,7 +36,7 @@ const parseBody = (body, headers) => {
 };
 
 /*eslint-disable  no-console */
-const resolveFixture = (fixtures, urlPath, method, body) => {
+const resolveFixture = (routes, urlPath, method, body) => {
   const url = new URL(`http://localhost${urlPath}`);
   const helpMessage = 'Add a new fixture!';
 
@@ -49,14 +52,14 @@ const resolveFixture = (fixtures, urlPath, method, body) => {
     logBuffer.push(() => console.info('%c[BODY]', 'color: #380B61', body));
   }
 
-  const endpoint = fixtures[url.pathname];
+  const endpoint = lookupRoute(url.pathname, routes);
   if (endpoint === undefined) {
     logBuffer.push(() => console.groupEnd());
     evalLogBuffer(logBuffer);
     throw new Error(`No fixture provided for url: ${url.pathname}. ${helpMessage}`);
   }
 
-  const methodFixture = endpoint[method];
+  const methodFixture = endpoint.methods[method];
   if (methodFixture === undefined) {
     logBuffer.push(() => console.groupEnd());
     evalLogBuffer(logBuffer);
@@ -64,8 +67,8 @@ const resolveFixture = (fixtures, urlPath, method, body) => {
   }
 
   const bodyOrQuery = isGET ? trimStart(url.query, '?') : body;
-  const delegate = (...args) => resolveFixture(fixtures, ...args);
-  const result = methodFixture(bodyOrQuery, delegate);
+  const delegate = (...args) => resolveFixture(routes, ...args);
+  const result = methodFixture(bodyOrQuery, delegate, endpoint.params);
 
   result.then(
     result => {
